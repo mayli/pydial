@@ -12,7 +12,7 @@ Based on code from PyChromecast - https://github.com/balloob/pychromecast
 
 import select
 import socket
-from urllib.parse import urlparse
+from future.moves.urllib.parse import urlparse
 import datetime as dt
 from contextlib import closing
 import xml.etree.ElementTree as ET
