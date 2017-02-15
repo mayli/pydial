@@ -124,10 +124,10 @@ class DialClient(requests.Session):
 
           url = _BASE_URL.format(self.app_host, self.app_port, self.app_path) \
                     + appid
-          header = ''
+          headers = {}
           if not args:
-               header = 'Content-Length: 0'
-          req = requests.Request('POST', url, data=args, headers=header)
+               headers['Content-Length'] = 0
+          req = requests.Request('POST', url, data=args, headers=headers)
           prepped = req.prepare()
           response = self.send(prepped)
           print(response)
@@ -182,7 +182,7 @@ class DialClient(requests.Session):
                             api_version)
 
           except (requests.exceptions.RequestException, ET.ParseError):
-               return None 
+               return None
 
 
 def discover(max_devices=None, timeout=DISCOVER_TIMEOUT, verbose=False):
@@ -211,7 +211,7 @@ def discover(max_devices=None, timeout=DISCOVER_TIMEOUT, verbose=False):
                ready = select.select([sock], [], [], seconds_left)[0]
 
                if ready:
-                    response = str(sock.recv(1024), 'utf-8')
+                    response = sock.recv(1024).decode('utf-8')
                     if verbose:
                          print(response)
                     found_url = found_st = None

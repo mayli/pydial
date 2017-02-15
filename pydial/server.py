@@ -32,12 +32,12 @@ class SSDPHandler(socketserver.BaseRequestHandler):
      RequestHandler object to deal with DIAL UPnP search requests.
 
      Note that per the SSD protocol, the server will sleep for up
-     to the number of seconds specified in the MX value of the 
+     to the number of seconds specified in the MX value of the
      search request- this may cause the system to not respond if
      you are not using the multi-thread or forking mixin.
      """
      def __init__(self, request, client_address, server):
-          socketserver.BaseRequestHandler.__init__(self, request, 
+          socketserver.BaseRequestHandler.__init__(self, request,
                          client_address, server)
           self.max_delay = DELAY_DEFAULT
 
@@ -47,7 +47,7 @@ class SSDPHandler(socketserver.BaseRequestHandler):
           search parameters and UPnP search target, and replies
           with the application URL that the server advertises.
           """
-          data = str(self.request[0], 'utf-8')
+          data = self.request[0].decode('utf-8')
           data = data.strip().split('\r\n')
           if data[0] != UPNP_SEARCH:
                return
@@ -70,7 +70,7 @@ class SSDPHandler(socketserver.BaseRequestHandler):
           """Sends reply to SSDP search messages."""
           time.sleep(random.randint(0, self.max_delay))
           _socket = self.request[1]
-          timestamp = time.strftime("%A, %d %B %Y %H:%M:%S GMT", 
+          timestamp = time.strftime("%A, %d %B %Y %H:%M:%S GMT",
                     time.gmtime())
           reply_data = SSDP_REPLY.format(self.server.device_url,
                     self.server.cache_expire, self.server.os_id,
@@ -79,13 +79,13 @@ class SSDPHandler(socketserver.BaseRequestHandler):
 
           sent = 0
           while sent < len(reply_data):
-               sent += _socket.sendto(bytes(reply_data, 'utf-8'), self.client_address)
+               sent += _socket.sendto(reply_data.encode('utf-8'), self.client_address)
 
 class SSDPServer(socketserver.UDPServer):
      """
      Inherits from SocketServer.UDPServer to implement the SSDP
      portions of the DIAL protocol- listening for search requests
-     on port 1900 for messages to the DIAL multicast group and 
+     on port 1900 for messages to the DIAL multicast group and
      replying with information on the URL used to request app
      actions from the server.
 
@@ -94,7 +94,7 @@ class SSDPServer(socketserver.UDPServer):
           -host: host/IP address to listen on
 
      The following attributes are set by default, but should be
-     changed if you want to use this class as the basis for a 
+     changed if you want to use this class as the basis for a
      more complete server:
      product_id - Name of the server/product. Defaults to PyDial Server.
      product_version - Product version. Defaults to whatever version
@@ -106,13 +106,13 @@ class SSDPServer(socketserver.UDPServer):
      uuid - UUID. By default created from the NIC via uuid.uuid1()
      """
      def __init__(self, device_url, host=''):
-          socketserver.UDPServer.__init__(self, (host, SSDP_PORT), 
+          socketserver.UDPServer.__init__(self, (host, SSDP_PORT),
                     SSDPHandler, False)
           self.allow_reuse_address = True
           self.server_bind()
           mreq = struct.pack("=4sl", socket.inet_aton(SSDP_ADDR),
                                        socket.INADDR_ANY)
-          self.socket.setsockopt(socket.IPPROTO_IP, 
+          self.socket.setsockopt(socket.IPPROTO_IP,
                     socket.IP_ADD_MEMBERSHIP, mreq)
           self.device_url = device_url
           self.product_id = PRODUCT
