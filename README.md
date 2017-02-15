@@ -2,6 +2,8 @@ NOTE: PyDial is currently pre-alpha, and in the middle of being ported from Pyth
 
 pydial
 ======
+[![Build Status](https://travis-ci.org/mayli/pydial.svg?branch=master)](https://travis-ci.org/mayli/pydial)
+[![Coverage Status](https://coveralls.io/repos/github/mayli/pydial/badge.svg?branch=master)](https://coveralls.io/github/mayli/pydial?branch=master)
 
 Simple Python client and server for the DIAL protocol.
 
