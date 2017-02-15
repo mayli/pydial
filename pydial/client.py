@@ -198,7 +198,7 @@ def discover(max_devices=None, timeout=DISCOVER_TIMEOUT, verbose=False):
      start = dt.datetime.now()
 
      with closing(socket.socket(socket.AF_INET, socket.SOCK_DGRAM)) as sock:
-          sock.sendto(bytes(SSDP_REQUEST, 'utf-8'), (SSDP_ADDR, SSDP_PORT))
+          sock.sendto(SSDP_REQUEST.encode('utf-8'), (SSDP_ADDR, SSDP_PORT))
           sock.setblocking(0)
 
           while True:
