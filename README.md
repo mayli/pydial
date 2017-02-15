@@ -4,6 +4,9 @@ pydial
 ======
 [![Build Status](https://travis-ci.org/mayli/pydial.svg?branch=master)](https://travis-ci.org/mayli/pydial)
 [![Coverage Status](https://coveralls.io/repos/github/mayli/pydial/badge.svg?branch=master)](https://coveralls.io/github/mayli/pydial?branch=master)
+[![Requirements Status](https://requires.io/github/mayli/pydial/requirements.svg?branch=master)](https://requires.io/github/mayli/pydial/requirements/?branch=master)
+[![Code Health](https://landscape.io/github/mayli/pydial/master/landscape.svg?style=flat)](https://landscape.io/github/mayli/pydial/master)
+
 
 Simple Python client and server for the DIAL protocol.
 
